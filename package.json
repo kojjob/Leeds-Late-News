@@ -6,9 +6,14 @@
   "scripts": {
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "knex seed:run",
-    "test": "jest --watch",
+    "seed-dev": "NODE_ENV=dev knex seed:run",
+    "seed-test": "NODE_ENV=test knex seed:run",
+    "start": "node listen.js",
+    "test": "jest --watch --verbose=false ",
+    "dev": "nodemon listen.js",
     "migrate-make": "knex migrate:make",
-    "dev": "nodemon app.js"
+    "migrate-latest": "knex migrate:latest",
+    "migrate-rollback": "knex migrate:rollback"
   },
   "repository": {
     "type": "git",

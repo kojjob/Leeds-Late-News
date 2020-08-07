@@ -1,7 +1,7 @@
 exports.formatDates = list => {
   const newList = [...list]
 
-  if(list.length === 0) return []
+  if (list.length === 0) return []
   newList.map((blog) => ({
     title: blog.title,
     topic: blog.topic,
@@ -21,17 +21,17 @@ exports.makeRefObj = (list, targetgKey, targetValue) => {
 
 exports.formatComments = (comments, articleRef) => {
 
-  return comments.map((comment) => {
-    const newComments = { ...comment};
-
-    newComments.article_id = articleRef[comment.belongs_to];
-    delete newComments.belongs_to;
-
-    newComments.created_at = new Date(newComments.created_at);
+  const updatedComments = comments.map((comment) => {
+    const newComment = {...comment };
+    newComment.article_id = articleRef[comment.belongs_to];
+    delete newComment.belongs_to;
     
-    newComments.author = newComments.created_by;
-    delete newComments.created_by;
-    console.log(newComments)
-    return newComments;
+   
+    newComment.author = comment.created_by;
+    delete newComment.created_by;
+    
+    newComment.created_at = new Date(comment.created_at);
+    return newComment;
   });
+  return updatedComments;
 };
