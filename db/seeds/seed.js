@@ -2,32 +2,34 @@ const {
   topicData,
   articleData,
   commentData,
-  userData
-} = require('../data/index.js');
+  userData,
+} = require("../data/index.js");
 
 const {
   formatDates,
   formatComments,
   makeRefObj
-} = require('../utils/utils');
+} = require("../utils/utils");
 
 exports.seed = function (knex) {
   return knex.migrate
     .rollback()
-    .then(() => knex.migrate.latest())
     .then(() => {
-      1
-      const topicsInsertions = knex('topics').insert(topicData);
-      const usersInsertions = knex('users').insert(userData);
-
-      return Promise.all([topicsInsertions, usersInsertions])
+      return knex.migrate.latest();
     })
     .then(() => {
-      return knex('articles').insert(formatDates(articleData)).returning("*")
+      const topicsInsertions = knex("topics").insert(topicData).returning("*");
+      const usersInsertions = knex("users").insert(userData).returning("*");
+      return Promise.all([topicsInsertions, usersInsertions]);
     })
-    .then(articleRows => {
+    .then(() => {
+      const formattedData = formatDates(articleData);
+      return knex("articles").insert(formattedData).returning("*");
+    })
+    .then((articleRows) => {
       const articleRef = makeRefObj(articleRows);
       const formattedComments = formatComments(commentData, articleRef);
-      return knex('comments').insert(formattedComments).returning("*");
+
+      return knex("comments").insert(formattedComments);
     });
 };

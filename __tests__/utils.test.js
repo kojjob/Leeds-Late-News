@@ -3,12 +3,7 @@ const {
   makeRefObj,
   formatComments,
 } = require('../db/utils/utils');
-const {
-  TestScheduler
-} = require('jest');
-const {
-  types
-} = require('pg');
+
 
 describe('formatDates', () => {
   test('return an empty array when passed an empty array', () => {
@@ -112,7 +107,7 @@ describe('formatComments', () => {
       A: 1,
     });
   });
-  
+
 });
 
 
